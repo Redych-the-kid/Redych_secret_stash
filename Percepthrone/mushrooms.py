@@ -40,6 +40,23 @@ def shuffle_batch(dataset_x_batch, dataset_y_batch):
                 dataset_y_batch[i] = dataset_y_batch[j]
                 dataset_y_batch[j] = swapper
 
+def calc_metrics(dataset):
+    tp, tn, fp, fn = 0, 0, 0, 0
+    for i in range(len(dataset[0])):
+        x = dataset[0][i]
+        y = dataset[1][i]
+        z = predict(x)
+        yi_pred = np.argmax(z)
+        if (y == 1 and yi_pred == 1):
+            tp += 1
+        elif (y == 1 and yi_pred == 0):
+            fn += 1
+        elif (y == 0 and yi_pred == 0):
+            tn += 1
+        elif (y == 0 and yi_pred == 1):
+            fp += 1
+    return tp, tn, fp, fn
+
 df = pd.read_excel('mushroom-dataset.xlsx')
 dataset = np.array(df)
 
@@ -57,7 +74,7 @@ dataset_y_batch = np.array_split(train_dataset[1], BATCH_SIZE, axis=0)
 
 # Параметры
 INPUT_DIM = len(train_dataset[0][0]) # Ширина входа
-OUT_DIM: int = int(np.max(train_dataset[1])) + 1 # Ширина выхода
+OUT_DIM: int = 2 # Ширина выхода
 H_DIM = INPUT_DIM + 10 # Ширина первого слоя
 
 # веса
@@ -130,6 +147,7 @@ def calc_accuracy(dataset):
 
 accuracy = calc_accuracy(test_dataset)
 print("Accuracy:", accuracy)
-
+tp, tn, fp, fn = calc_metrics(test_dataset)
+print("Metrics:","\nTP:", tp,"\nTN:", tn, "\nFP:", fp,"\nFN:", fn)
 plt.plot(loss_arr)
 plt.show()

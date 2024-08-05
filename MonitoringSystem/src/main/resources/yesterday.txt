@@ -1,0 +1,3 @@
+google.com,200
+4chan.org,500
+example.com,200

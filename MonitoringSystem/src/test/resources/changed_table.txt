@@ -1,0 +1,3 @@
+google.com,404
+4chan.org,200
+example.com,404

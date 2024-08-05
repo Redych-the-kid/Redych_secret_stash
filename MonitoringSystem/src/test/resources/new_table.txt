@@ -1,0 +1,3 @@
+yandex.ru,200
+mail.ru,200
+gorillaz.com,200
